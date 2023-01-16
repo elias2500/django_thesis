@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h3>Room:</h3>
+        <p>{{ room.title }}</p>
+        <h4>Number of Players:</h4>
+        <p>{{ room.noOfPlayers }}</p>
+        <h4>Actor:</h4>
+        <p>{{ room.hasActor }}</p>
+        <h4>Theme:</h4>
+        <p>{{ room.theme }}</p>
+        <h4>Scenario:</h4>
+        <p>{{ room.scenario }}</p>
+        <!--<h4>Number of Riddles:</h4>
+        <p>{{ room.noOfRiddles }}</p>-->
+        <h4>Riddles:</h4>
+        <p>{{ room.riddles }}</p>
+    
+        <div class="media-footer">
+            {% if user.is_authenticated and room.user == user and not hide_delete %}
+                <a href="{% url 'rooms:delete' pk=room.pk %}" title="delete" class="btn btn-danger">Delete</a>
+            {% endif %}
+            {% if user.is_authenticated and room.user == user %}
+                <a href="{% url 'rooms:update' username=user.username pk=room.pk %}" class='btn btn-primary'>Update</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}
