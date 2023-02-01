@@ -16,7 +16,7 @@ class Room(models.Model):
     theme = models.CharField(max_length=256, blank=True)
     scenario = models.TextField(blank=True)
     #noOfRiddles = models.PositiveSmallIntegerField(blank=True)
-    riddles = models.TextField(blank=True)
+    #riddles = models.TextField(blank=True)
 
     def get_absolute_url(self):
         return reverse(

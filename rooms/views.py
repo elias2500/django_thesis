@@ -47,7 +47,7 @@ class RoomDetail(SelectRelatedMixin, generic.DetailView):
         )
 
 class CreateRoom(LoginRequiredMixin, SelectRelatedMixin, generic.CreateView):
-    fields = ('title','noOfPlayers','difficulty','hasActor','theme','scenario','riddles')
+    fields = ('title','noOfPlayers','difficulty','hasActor','theme','scenario',)
     model = models.Room
 
     def form_valid(self, form):
@@ -57,7 +57,7 @@ class CreateRoom(LoginRequiredMixin, SelectRelatedMixin, generic.CreateView):
         return super().form_valid(form)
 
 class UpdateRoom(LoginRequiredMixin, generic.UpdateView):
-    fields = ('title','noOfPlayers','difficulty','hasActor','theme','scenario','riddles')
+    fields = ('title','noOfPlayers','difficulty','hasActor','theme','scenario')
     model = models.Room
 
 class DeleteRoom(LoginRequiredMixin, SelectRelatedMixin, generic.DeleteView):
