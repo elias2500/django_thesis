@@ -29,3 +29,8 @@ class Room(models.Model):
 
     class Meta:
         unique_together = ['user','title']
+
+class Riddle(models.Model):
+    project = models.ForeignKey(Room, on_delete=models.CASCADE)
+    description = models.TextField()
+    solution = models.TextField()
