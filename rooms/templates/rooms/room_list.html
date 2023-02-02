@@ -2,7 +2,7 @@
 {% block content %}
 <div class='p-5 mb-4 bg-light rounded-3'>
     {% for room in object_list %}
-        <li><a href="{% url 'rooms:single' username=user.username pk=room.pk %}">{{room.title}}</a></li>
+        <li><a href="{% url 'rooms:project_list' username=user.username pk=room.pk %}">{{room.title}}</a></li>
     {% endfor %}
 </div>
 {% if user.is_authenticated %}
