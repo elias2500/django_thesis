@@ -5,7 +5,6 @@
   <p>Max Players: {{ project.max_players }}</p>
   <p>Has Actor: {{ project.has_actor }}</p>
   <p>Scenario: {{ project.scenario }}</p>
-  <p>Number of Riddles: {{ project.num_riddles }}</p>
   
   <h2>Riddles:</h2>
   <ul>
@@ -14,6 +13,10 @@
     {% endfor %}
   </ul>
   
-  <a href="{% url 'project_update' project.pk %}">Edit</a>
-  <a href="{% url 'project_delete' project.pk %}">Delete</a>
+  {% if user.is_authenticated and project.user == user %}
+    <a href="{% url 'rooms:project_update' project.pk %}" class='btn btn-primary'>Update</a>
+  {% endif %}
+  {% if user.is_authenticated and project.user == user and not hide_delete %}
+    <a href="{% url 'rooms:project_delete' project.pk %}" class="btn btn-danger">Delete</a>
+  {% endif %}
 {% endblock %}

@@ -7,7 +7,7 @@
         {% if not form.instance.pk %}
         Create a new Room!
         {% else %}
-        Update Room
+        Update Room!
         {% endif %}
     </h4>
     {% if not form.instance.pk %}
@@ -16,10 +16,21 @@
             {% bootstrap_form form %}
             <input type="submit" value='Create Room'>
         </form>
+        <form method='POST'>
+            {% csrf_token %}
+            {% bootstrap_form riddle_form %}
+            <input type="submit" value='Add Riddle'>
+        </form>
     {% else %}
-        <form action="{% url 'rooms:project_update' pk=room.pk %}" method='POST'>
+        <form action="{% url 'rooms:project_update' pk=project.pk %}" method='POST'>
             {% csrf_token %}
             {% bootstrap_form form %}
             <input type="submit" value='Update Room'>
         </form>
+        <form method='POST'>
+            {% csrf_token %}
+            {% bootstrap_form riddle_form %}
+            <input type="submit" value='Add Riddle'>
+        </form>
+    {% endif %}
 {% endblock content %}
