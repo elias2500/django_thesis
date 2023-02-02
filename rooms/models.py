@@ -1,36 +1,16 @@
 from django.db import models
-from django.urls import reverse
 from django.contrib.auth import get_user_model
-
-# Create your models here.
 
 User = get_user_model()
 
-
-class Room(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='rooms')
-    title = models.CharField(max_length=256)
-    noOfPlayers = models.PositiveSmallIntegerField(blank=True)
-    difficulty = models.CharField(max_length=10, blank=True)
-    hasActor = models.BooleanField(blank=True)
-    theme = models.CharField(max_length=256, blank=True)
-    scenario = models.TextField(blank=True)
-    #noOfRiddles = models.PositiveSmallIntegerField(blank=True)
-    #riddles = models.TextField(blank=True)
-
-    def get_absolute_url(self):
-        return reverse(
-            "rooms:single",
-            kwargs={
-                "username": self.user.username,
-                "pk": self.pk
-            }
-        )
-
-    class Meta:
-        unique_together = ['user','title']
+class Project(models.Model):
+    title = models.CharField(max_length=255)
+    max_players = models.PositiveIntegerField(default=0)
+    has_actor = models.BooleanField(default=False)
+    scenario = models.TextField()
+    number_of_riddles = models.PositiveIntegerField(default=0)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Riddle(models.Model):
-    project = models.ForeignKey(Room, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
     description = models.TextField()
-    solution = models.TextField()

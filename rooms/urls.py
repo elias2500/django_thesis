@@ -1,12 +1,12 @@
-from django.urls import re_path
-from . import views
+from django.urls import path
+from .views import ProjectListView, ProjectDetailView, ProjectCreateView, ProjectUpdateView, ProjectDeleteView
 
 app_name = 'rooms'
 
 urlpatterns = [
-    re_path(r'^new/$', views.CreateRoom.as_view(), name='create'),
-    re_path(r"^by/(?P<username>[-\w]+)/$", views.UserRooms.as_view(),name='roomlist'),
-    re_path(r"^by/(?P<username>[-\w]+)/(?P<pk>\d+)/$",views.RoomDetail.as_view(),name="single"),
-    re_path(r"^delete/(?P<pk>\d+)/$",views.DeleteRoom.as_view(),name="delete"),
-    re_path(r"^update/(?P<username>[-\w]+)/(?P<pk>\d+)/$", views.UpdateRoom.as_view(),name='update'),
+    path('projects/', ProjectListView.as_view(), name='project_list'),
+    path('projects/<int:pk>/', ProjectDetailView.as_view(), name='project_detail'),
+    path('projects/create/', ProjectCreateView.as_view(), name='project_create'),
+    path('projects/<int:pk>/update/', ProjectUpdateView.as_view(), name='project_update'),
+    path('projects/<int:pk>/delete/', ProjectDeleteView.as_view(), name='project_delete'),
 ]
