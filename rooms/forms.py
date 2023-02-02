@@ -1,11 +1,12 @@
 from django import forms
-from . import models
+from .models import Project, Riddle
 
-class RoomForm(forms.ModelForm):
+class ProjectForm(forms.ModelForm):
     class Meta:
-        fields = ('title','noOfPlayers','difficulty','hasActor','theme','scenario')
-        model = models.Room
+        model = Project
+        fields = ['title', 'max_players', 'has_actor', 'scenario', 'num_riddles']
 
-    def __init__(self,*args,**kwargs):
-        user = kwargs.pop('user', None)
-        super().__init__(*args,**kwargs)
+class RiddleForm(forms.ModelForm):
+    class Meta:
+        model = Riddle
+        fields = ['description']

@@ -2,24 +2,24 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-<h4>
+
+    <h4>
+        {% if not form.instance.pk %}
+        Create a new Room!
+        {% else %}
+        Update Room
+        {% endif %}
+    </h4>
     {% if not form.instance.pk %}
-    Create a new Room!
+        <form action="{% url 'rooms:project_create' %}" method='POST'>
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <input type="submit" value='Create Room'>
+        </form>
     {% else %}
-    Update Room
-    {% endif %}
-</h4>
-{% if not form.instance.pk %}
-    <form action="{% url 'rooms:create' %}" method='POST'>
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        <input type="submit" value='Create Room'>
-    </form>
-{% else %}
-    <form action="{% url 'rooms:update' username=user.username pk=room.pk %}" method='POST'>
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        <input type="submit" value='Update Room'>
-    </form>
-{% endif %}
+        <form action="{% url 'rooms:project_update' pk=room.pk %}" method='POST'>
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <input type="submit" value='Update Room'>
+        </form>
 {% endblock content %}
