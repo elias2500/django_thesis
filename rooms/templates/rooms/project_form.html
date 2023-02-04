@@ -11,26 +11,18 @@
         {% endif %}
     </h4>
     {% if not form.instance.pk %}
-        <form action="{% url 'rooms:project_create' %}" method='POST'>
-            {% csrf_token %}
-            {% bootstrap_form form %}
-            <input type="submit" value='Create Room'>
-        </form>
-        <form method='POST'>
-            {% csrf_token %}
-            {% bootstrap_form riddle_form %}
-            <input type="submit" value='Add Riddle'>
-        </form>
+        <div>
+            <form action="{% url 'rooms:project_create' %}" method='POST'>
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <input type="submit" class='btn btn-info' value='Create Room'>
+            </form>
+        </div>
     {% else %}
         <form action="{% url 'rooms:project_update' pk=project.pk %}" method='POST'>
             {% csrf_token %}
             {% bootstrap_form form %}
-            <input type="submit" value='Update Room'>
-        </form>
-        <form method='POST'>
-            {% csrf_token %}
-            {% bootstrap_form riddle_form %}
-            <input type="submit" value='Add Riddle'>
+            <input type="submit" class='btn btn-info' value='Update Room'>
         </form>
     {% endif %}
 {% endblock content %}

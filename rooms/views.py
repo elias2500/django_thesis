@@ -1,4 +1,3 @@
-from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View, generic
@@ -13,6 +12,7 @@ from django.contrib import messages
 User = get_user_model()
 
 class ProjectCreateView(CreateView):
+    model = Project
     form_class = ProjectForm
     template_name = 'rooms/project_form.html'
     #success_url = reverse_lazy('rooms:project_list username=')
@@ -24,19 +24,21 @@ class ProjectCreateView(CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['riddle_form'] = RiddleForm()
-        return context
+    #def get_context_data(self, **kwargs):
+     #   context = super().get_context_data(**kwargs)
+      #  context['riddle_form'] = RiddleForm()
+       # return context
 
-    def form_valid(self, form):
+    #def form_valid(self, form):
         #project = form.save()
-        riddle_form = RiddleForm(self.request.POST)
-        if riddle_form.is_valid():
-            riddle = riddle_form.save(commit=False)
-            riddle.project = project
-            riddle.save()
-        return super().form_valid(form)
+     #   project_id = self.kwargs.get('pk')
+      #  project = Project.objects.get(id=project_id)
+       # riddle_form = RiddleForm(self.request.POST)
+        #if riddle_form.is_valid():
+         #   riddle = riddle_form.save(commit=False)
+          #  riddle.project = project
+           # riddle.save()
+        #return super().form_valid(form)
 
 class ProjectDetailView(DetailView):
     model = Project
@@ -59,14 +61,16 @@ class ProjectUpdateView(UpdateView):
         context['riddle_form'] = RiddleForm()
         return context
 
-    def form_valid(self, form):
+    #def form_valid(self, form):
         #project = form.save()
-        riddle_form = RiddleForm(self.request.POST)
-        if riddle_form.is_valid():
-            riddle = riddle_form.save(commit=False)
-            riddle.project = project
-            riddle.save()
-        return super().form_valid(form)
+     #   project_id = self.kwargs.get('pk')
+      #  project = Project.objects.get(id=project_id)
+       # riddle_form = RiddleForm(self.request.POST)
+        #if riddle_form.is_valid():
+         #   riddle = riddle_form.save(commit=False)
+          #  riddle.project = project
+           # riddle.save()
+        #return super().form_valid(form)
 
     #def form_valid(self, form):
      #   form.save()
@@ -91,7 +95,6 @@ class ProjectListView(generic.ListView):
         context["room_user"] = self.room_user
         return context
 
-
 class ProjectDeleteView(LoginRequiredMixin, SelectRelatedMixin, generic.DeleteView):
     model = Project
     select_related = ('user',)
@@ -108,9 +111,27 @@ class ProjectDeleteView(LoginRequiredMixin, SelectRelatedMixin, generic.DeleteVi
         messages.success(self.request, "Post Deleted")
         return super().delete(*args, **kwargs)
 
+class RiddleAddView(CreateView):
+    model = Riddle
+    form_class = RiddleForm
+    template_name = 'rooms/riddle_form.html'
 
-#class ProjectDeleteView(LoginRequiredMixin, View):
- #   def post(self, request, project_id, *args, **kwargs):
-  #      project = Project.objects.get(id=project_id)
-   #     project.delete()
-    #    return redirect('project_list')
+    def form_valid(self, form):
+        project = form.cleaned_data.get('project')
+        project_title = project.title
+        try:
+            project = Project.objects.get(title=project_title)
+        except Project.DoesNotExist:
+            messages.error(self.request, "No project with the title '{}' was found.".format(project_title))
+            return super().form_invalid(form)
+        form.instance.project = project
+        return super().form_valid(form)
+
+    def get_success_url(self):
+       return reverse_lazy('rooms:project_detail', kwargs={'username': self.object.project.user.username, 'pk': self.object.project.id})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['riddle_form'] = RiddleForm()
+        #context['project_id'] = self.kwargs['project_id']
+        return context

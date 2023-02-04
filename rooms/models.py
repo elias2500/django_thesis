@@ -5,10 +5,10 @@ from django.urls import reverse
 User = get_user_model()
 
 class Project(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, unique=True)
     max_players = models.PositiveIntegerField(default=0)
     has_actor = models.BooleanField(default=False)
-    scenario = models.TextField()
+    scenario = models.TextField(blank=True, null=True)
     #number_of_riddles = models.PositiveIntegerField(default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='rooms')
 
