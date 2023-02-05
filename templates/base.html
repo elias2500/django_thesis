@@ -24,7 +24,7 @@
                         {% if request.user.is_authenticated %}
                             <li><a class="btn btn-primary me-2" href="{% url 'rooms:project_list' username=user.username %}">Projects</a></li>
                             <li><a class="btn btn-outline-light me-2" href="{% url 'accounts:logout' %}">Logout</a></li>
-                            <li><a class="btn btn-warning" href="{% url 'rooms:project_create' %}">Create</a></li>
+                            <li><a class="btn btn-warning" href="{% url 'rooms:project_create' %}">Create Room</a></li>
                         {% else %}
                         <div class="text-end">
                             <a class="btn btn-outline-light me-2" href="{% url 'accounts:login' %}">Login</a>
