@@ -56,10 +56,10 @@ class ProjectUpdateView(UpdateView):
     form_class = ProjectForm
     template_name = 'rooms/project_form.html'
 
-    def get_context_data(self, **kwargs):
+    """def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['riddle_form'] = RiddleForm()
-        return context
+        return context"""
 
     #def form_valid(self, form):
         #project = form.save()
@@ -116,15 +116,15 @@ class RiddleAddView(CreateView):
     form_class = RiddleForm
     template_name = 'rooms/riddle_form.html'
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
+
     def form_valid(self, form):
-        project = form.cleaned_data.get('project')
-        project_title = project.title
-        try:
-            project = Project.objects.get(title=project_title)
-        except Project.DoesNotExist:
-            messages.error(self.request, "No project with the title '{}' was found.".format(project_title))
-            return super().form_invalid(form)
-        form.instance.project = project
+        riddle = form.save(commit=False)
+        riddle.project = form.cleaned_data['project']
+        riddle.save()
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -132,6 +132,5 @@ class RiddleAddView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['riddle_form'] = RiddleForm()
-        #context['project_id'] = self.kwargs['project_id']
+        context['riddle_form'] = RiddleForm(request=self.request)
         return context
